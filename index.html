@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#1b1147">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>لمّة العايلة</title>
+<style>
+:root{--bg1:#1b1147;--bg2:#4a1d7a;--bg3:#ff4f81;--g:rgba(255,255,255,.14);--gb:rgba(255,255,255,.35);--ok:#2fe0a0;--no:#ff5470;--ac:#ffc83d}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{font-size:16px}@media(min-width:1100px){html{font-size:22px}}
+body{margin:0;min-height:100vh;color:#fff;font-family:"Noto Kufi Arabic","Segoe UI",Tahoma,system-ui,sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2) 55%,var(--bg3));background-size:200% 200%;animation:bgm 18s ease infinite;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+@keyframes bgm{50%{background-position:100% 100%}}
+#a{max-width:1100px;margin:0 auto;padding:14px}
+h1{font-size:2rem;margin:.2em 0;text-align:center}h2{text-align:center;line-height:1.5;font-size:clamp(1.3rem,4.5vw,2rem)}h3{margin:.6em 0 .2em}
+.q{font-size:clamp(1.6rem,4vw,3rem)}
+.c{background:var(--g);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--gb);border-radius:26px;padding:18px;box-shadow:0 12px 40px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.4);animation:pop .4s}
+@keyframes pop{from{transform:scale(.95);opacity:0}}
+.b{font:inherit;color:inherit;font-weight:600;cursor:pointer;padding:.8em 1em;border-radius:20px;border:1px solid var(--gb);background:linear-gradient(160deg,rgba(255,255,255,.3),rgba(255,255,255,.08));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 20px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.55);transition:transform .15s,opacity .3s}
+.b:active{transform:scale(.95)}.b:focus-visible,input:focus-visible{outline:4px solid var(--ac);outline-offset:3px}
+.b:disabled{cursor:default}.big{width:100%;margin-top:14px;font-size:1.2rem}.sm{padding:.4em .8em;margin:3px}
+.ok{background:linear-gradient(160deg,rgba(47,224,160,.9),rgba(47,224,160,.35))}
+.no{background:linear-gradient(160deg,rgba(255,84,112,.9),rgba(255,84,112,.35))}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.op{background:linear-gradient(160deg,var(--c),rgba(0,0,0,.3));min-height:90px;font-size:1.2rem;text-align:center;display:flex;align-items:center;justify-content:center}
+.op.ok{background:linear-gradient(160deg,#2fe0a0,#0a7a55);transform:scale(1.04)}.dim{opacity:.3}
+.row{display:flex;gap:10px}input{flex:1;min-width:0;font:inherit;font-size:1.2rem;padding:.7em 1em;border-radius:18px;border:1px solid var(--gb);background:rgba(255,255,255,.15);color:#fff;text-align:center}
+input::placeholder{color:rgba(255,255,255,.6)}
+.chip{display:inline-block;padding:.35em .9em;margin:3px;border-radius:99px;background:var(--g);border:1px solid var(--gb);font-weight:600}
+.top{display:flex;justify-content:space-between;margin-bottom:8px;font-size:1.2rem}
+.tb{height:12px;border-radius:9px;background:rgba(255,255,255,.2);overflow:hidden;margin:8px 0}
+.tb i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--no),var(--ac),var(--ok))}
+.lb{display:grid;grid-template-columns:270px 1fr;gap:22px;align-items:start}@media(max-width:760px){.lb{grid-template-columns:1fr}}
+#qr{background:#fff;padding:10px;border-radius:16px;display:inline-block}.cd{font-size:3rem;color:var(--ac);letter-spacing:.15em}
+.rk{display:flex;justify-content:space-between;padding:.6em 1em;margin:8px 0;border-radius:16px;background:rgba(255,255,255,.12);font-size:1.2rem;font-weight:700}
+.rk small{color:var(--ok)}.bw{flex:1;margin:0 12px;height:12px;border-radius:9px;background:rgba(255,255,255,.2);align-self:center;overflow:hidden}
+.bw i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--ok));transition:width 1s}
+</style>
+</head>
+<body>
+<div id="a"></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+/* >>> الصق إعدادات Firebase هنا (الأهم databaseURL) <<< */
+const FB={databaseURL:"https://lamma-57dec-default-rtdb.europe-west1.firebasedatabase.app"};
+const D=[{"n":"معلومات عامة","i":"🧠","t":"mc","d":["ما أكبر كوكب في المجموعة الشمسية؟|المشتري|زحل|الأرض|المريخ","كم عدد ألوان قوس قزح؟|7|5|6|8","الحيوان الملقب بسفينة الصحراء؟|الجمل|الحصان|الفيل|الثور","كم قلباً للأخطبوط؟|3|1|2|4","ما أصغر قارة مساحة؟|أستراليا|أوروبا|أفريقيا|آسيا","لغة البرازيل الرسمية؟|البرتغالية|الإسبانية|الفرنسية|الإنجليزية","أي عضو يضخ الدم في الجسم؟|القلب|الكبد|الرئة|الكلية","كم عدد أسنان الإنسان البالغ؟|32|28|30|36","ما أسرع حيوان بري؟|الفهد|الأسد|الحصان|الغزال","أي غاز نتنفسه ليبقينا أحياء؟|الأكسجين|النيتروجين|الهيدروجين|الهيليوم","كم عدد كواكب المجموعة الشمسية؟|8|7|9|10","ما أكبر حيوان في العالم؟|الحوت الأزرق|الفيل|الزرافة|القرش","من رسم لوحة الموناليزا؟|ليوناردو دا فينشي|بيكاسو|فان غوخ|ميكيلانجيلو","كم عدد القارات؟|7|5|6|8","ما أكبر عضو في جسم الإنسان؟|الجلد|الكبد|القلب|الدماغ","أي معدن يكون سائلاً في حرارة الغرفة؟|الزئبق|الحديد|النحاس|الألمنيوم"]},{"n":"جغرافيا","i":"🌍","t":"mc","d":["عاصمة اليابان؟|طوكيو|بكين|سيول|بانكوك","أين يقع برج إيفل؟|باريس|روما|لندن|مدريد","أكبر محيط في العالم؟|الهادئ|الأطلسي|الهندي|المتجمد","عاصمة تركيا؟|أنقرة|إسطنبول|إزمير|بورصة","أعلى جبل في العالم؟|إيفرست|كليمنجارو|الألب|فوجي","عاصمة مصر؟|القاهرة|الإسكندرية|الجيزة|أسوان","عاصمة السعودية؟|الرياض|جدة|مكة|الدمام","عاصمة الأردن؟|عمّان|إربد|العقبة|الزرقاء","أطول نهر في العالم؟|النيل|الأمازون|الفرات|المسيسيبي","عاصمة المغرب؟|الرباط|الدار البيضاء|مراكش|فاس","عاصمة إيطاليا؟|روما|ميلانو|نابولي|فلورنسا","عاصمة ألمانيا؟|برلين|ميونخ|هامبورغ|فرانكفورت","أكبر دولة مساحة؟|روسيا|الصين|كندا|أمريكا","عاصمة الإمارات؟|أبوظبي|دبي|الشارقة|العين","عاصمة عُمان؟|مسقط|صلالة|صحار|نزوى"]},{"n":"صح أم خطأ","i":"✅","t":"tf","d":["الشمس نجم|1","الحوت سمكة|0","العنكبوت حشرة|0","الماء يغلي عند 100 مئوية بمستوى البحر|1","القمر يدور حول الأرض|1","الإنسان يستخدم 10٪ فقط من دماغه|0","الطماطم فاكهة من الناحية العلمية|1","الأخطبوط له ثلاثة قلوب|1","الخفاش طائر|0","البطريق يعيش في القطب الشمالي|0","الصوت ينتقل في الفراغ|0","الذهب يصدأ|0","الدلفين من الثدييات|1","أطول عظمة في الجسم هي عظمة الفخذ|1","الأرض أقرب إلى الشمس من الزهرة|0"]},{"n":"ألغاز","i":"🧩","t":"rv","d":["شي له أسنان ولا يعض؟|المشط","يمشي بلا رجلين ويبكي بلا عينين؟|السحاب","كلما أخذت منه كبر؟|الحفرة","له عين ولا يرى؟|الإبرة","كلما زاد نقص؟|العمر","يكتب ولا يقرأ؟|القلم","ما الشيء الذي يُكسر دون أن يُلمس؟|الوعد","ما الذي تملكه ويستعمله غيرك أكثر منك؟|اسمك","له وجه ويدان ولا يغسل وجهه؟|الساعة","ما الشيء الذي كلما جفّ ابتلّ؟|المنشفة","يسمع بلا أذن ويتكلم بلا لسان؟|الصدى","أخضر في الأرض وأسود في السوق وأحمر في البيت؟|الشاي","ما الذي يجري ولا يمشي؟|الماء"]},{"n":"شنو الشبه؟","i":"🔗","t":"rv","d":["ما الشبه بين الساعة والقلب؟|كلاهما يدق","ما الشبه بين الكتاب والشجرة؟|كلاهما له أوراق","ما الشبه بين النهر والبنك؟|كلاهما له فروع","ما الشبه بين الشمعة والمعلم؟|كلاهما يحترق ليضيء للآخرين","ما الشبه بين المرآة والصديق؟|كلاهما يريك حقيقتك","ما الشبه بين السيارة والإنسان؟|كلاهما يحتاج وقوداً","ما الشبه بين البحر والصمت؟|كلاهما عميق","ما الشبه بين الشجرة والأسرة؟|كلاهما له جذور وفروع","ما الشبه بين الفرن والشمس؟|كلاهما يعطي حرارة","ما الشبه بين الغيمة والإنسان؟|كلاهما يبكي ثم يهدأ","ما الشبه بين الصبر والعلقم؟|كلاهما مرّ"]},{"n":"كمّل المثل","i":"📜","t":"rv","d":["من زرع...|حصد","الصبر مفتاح...|الفرج","العلم في الصغر كالنقش على...|الحجر","الجار قبل...|الدار","اطلب العلم من المهد إلى...|اللحد","الوقت كالسيف إن لم تقطعه...|قطعك","الصديق وقت...|الضيق","ما حكّ جلدك مثل...|ظفرك","الطيور على أشكالها...|تقع","القرد في عين أمه...|غزال","الحاجة أم...|الاختراع","خير الكلام ما قلّ...|ودلّ","العتب على قدر...|المحبة","اتق شر من...|أحسنت إليه"]},{"n":"إيموجي خمّن","i":"😎","t":"rv","d":["🦁👑|الأسد الملك","🧊❄️👸|فروزن","🐠🔍|البحث عن نيمو","🚢🧊💔|تايتانيك","🧞‍♂️🪔|علاء الدين","🕷️🧍|سبايدرمان","🐢🐇🏁|السلحفاة والأرنب","🧙‍♂️⚡👓|هاري بوتر","🧜‍♀️🌊👑|حورية البحر","🦇🧍‍♂️🌃|باتمان","🐼🥋|كونغ فو باندا","🎈🏠👴|فوق (Up)","🤖🚗🔧|ترانسفورمرز"]},{"n":"فك الكلمة","i":"🔤","t":"sc","d":["مدرسة","سيارة","طائرة","حديقة","مطبخ","مكتبة","برتقال","بحيرة","سلحفاة","كمبيوتر","مستشفى","عصفور","مفتاح","دراجة","ملعقة","مظلة","شاطئ","جامعة","زرافة"]},{"n":"حساب سريع","i":"➕","t":"math","d":[]}];
+const $=q=>document.querySelector(q),A=$("#a"),sh=a=>[...a].map(x=>[Math.random(),x]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]),E=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const COL=["#e8446d","#3b82f6","#f5b301","#22c55e"],SH=["▲","◆","●","■"];
+let db=null;try{if(FB.databaseURL){firebase.initializeApp(FB);db=firebase.database()}}catch(e){}
+try{const l=document.createElement("link");l.rel="manifest";l.href=URL.createObjectURL(new Blob([JSON.stringify({name:"لمّة العايلة",short_name:"لمّة",display:"fullscreen",start_url:location.href.split("?")[0],background_color:"#1b1147",theme_color:"#1b1147",lang:"ar",dir:"rtl"})],{type:"application/json"}));document.head.append(l)}catch(e){}
+
+/* ---------- الأسئلة ---------- */
+function pickI(gi){let S={};try{S=JSON.parse(localStorage.sn2||"{}")}catch(e){}const n=D[gi].d.length;let u=S[gi]||[],f=[...Array(n).keys()].filter(i=>!u.includes(i));if(!f.length){u=[];f=[...Array(n).keys()]}const i=f[~~(Math.random()*f.length)];u.push(i);S[gi]=u;try{localStorage.sn2=JSON.stringify(S)}catch(e){}return i}
+function mk(gi){const g=D[gi],t=g.t;
+if(t=="math"){const a=~~(Math.random()*12)+3,b=~~(Math.random()*9)+2,o=sh(["+","×","−"])[0],r=o=="+"?a+b:o=="×"?a*b:a-b,x=sh([r,r+1,r-2,r+10].map(String));return{t:`${a} ${o} ${b} = ؟`,o:x,a:x.indexOf(String(r))}}
+const it=g.d[pickI(gi)].split("|");
+if(t=="mc"){const x=sh(it.slice(1));return{t:it[0],o:x,a:x.indexOf(it[1])}}
+if(t=="tf")return{t:it[0],o:["صح","خطأ"],a:it[1]=="1"?0:1};
+const ans=t=="sc"?it[0]:it[1],pool=g.d.map(s=>t=="sc"?s:s.split("|")[1]).filter(s=>s!=ans),x=sh([ans,...sh(pool).slice(0,3)]);
+return{t:t=="sc"?"رتّب الحروف: "+sh([...ans]).join(" "):it[0],o:x,a:x.indexOf(ans)}}
+
+/* ---------- الصفحة الرئيسية ---------- */
+function home(){A.innerHTML=`<div class=c><h1>🎉 لمّة العايلة</h1><button class="b big" onclick=host()>📺 شاشة التلفزيون (المضيف)</button><p style="text-align:center">أو انضم من جوالك:</p><div class=row><input id=cd inputmode=numeric maxlength=4 placeholder="رقم الغرفة"><button class=b onclick="$('#cd').value&&phone($('#cd').value.trim())">انضم</button></div></div>`}
+
+/* ---------- المضيف (التلفزيون) ---------- */
+let code,room,P={},S={},RS={},qs=[],cfg={c:-1,n:10,t:15},tm,qc=-1,t0,asw={};
+const np=()=>Object.keys(P).length;
+function host(){try{navigator.wakeLock&&navigator.wakeLock.request("screen")}catch(e){}
+code=String(~~(1000+Math.random()*9000));room=db.ref("rooms/"+code);room.onDisconnect().remove();
+room.set({state:{p:"lobby"}}).then(()=>room.child("players").on("value",s=>{P=s.val()||{};upl()}));lobby()}
+function upl(){const e=$("#pl");if(e)e.innerHTML=Object.values(P).map(p=>`<span class=chip>${E(p.n)}</span>`).join("")||"بانتظار اللاعبين..."}
+function lobby(){const url=location.href.split("?")[0].split("#")[0]+"?r="+code;
+A.innerHTML=`<div class=c><h1>🎉 لمّة العايلة</h1><div class=lb><div style="text-align:center"><div id=qr></div><p>امسح الرمز أو افتح الموقع وادخل الرقم:<br><b class=cd>${code}</b></p></div><div><h3>اللاعبون</h3><div id=pl></div><h3>القسم</h3><div id=sc></div><h3>عدد الأسئلة</h3><div id=sn></div><h3>وقت السؤال</h3><div id=st></div></div></div><button class="b big" onclick=go()>ابدأ اللعب ▶</button></div>`;
+try{new QRCode($("#qr"),{text:url,width:230,height:230,colorDark:"#1b1147",colorLight:"#ffffff"})}catch(e){$("#qr").textContent=url}
+opts();upl()}
+function opts(){const row=(id,k,l)=>$(id).innerHTML=l.map(([v,t])=>`<button class="b sm${cfg[k]==v?" ok":""}" onclick="cfg.${k}=${v};opts()">${t}</button>`).join("");
+row("#sc","c",[[-1,"🎲 منوّع"],...D.map((g,i)=>[i,g.i+" "+g.n])]);row("#sn","n",[5,10,15,20].map(v=>[v,v]));row("#st","t",[10,15,20,30].map(v=>[v,v+" ث"]))}
+function go(){if(!np())return alert("بانتظار لاعب واحد على الأقل");S={};Object.keys(P).forEach(k=>S[k]=0);qs=Array.from({length:cfg.n},()=>mk(cfg.c<0?~~(Math.random()*D.length):cfg.c));runQ(0)}
+function runQ(i){const q=qs[i];qc=i;asw={};RS={};t0=Date.now();
+room.child("state").set({p:"q",i,n:qs.length,t:q.t,o:q.o,d:cfg.t});
+room.child("ans/"+i).on("child_added",s=>{if(qc!=i)return;const id=s.key,c=(s.val()||{}).c;if(asw[id]!=null||!P[id]||typeof c!="number")return;const ok=c==q.a,rem=Math.max(0,cfg.t-(Date.now()-t0)/1000),pts=ok?Math.round(500+500*rem/cfg.t):0;asw[id]=c;S[id]=(S[id]||0)+pts;RS[id]={ok:ok?1:0,pts};$("#cn")&&($("#cn").textContent=Object.keys(asw).length+"/"+np());if(Object.keys(asw).length>=np())rev(i)});
+A.innerHTML=`<div class=top><b>سؤال ${i+1}/${qs.length}</b><b>✋ <span id=cn>0/${np()}</span></b><b id=tn>${cfg.t}</b></div><div class=c><div class=tb><i id=tf></i></div><h2 class=q>${E(q.t)}</h2><div class=g2>${q.o.map((o,k)=>`<div class="b op" style="--c:${COL[k]}">${SH[k]} ${E(o)}</div>`).join("")}</div></div>`;
+clearInterval(tm);tm=setInterval(()=>{const l=cfg.t-(Date.now()-t0)/1000;$("#tf")&&($("#tf").style.width=Math.max(0,l/cfg.t*100)+"%");$("#tn")&&($("#tn").textContent=Math.max(0,Math.ceil(l)));if(l<=0)rev(i)},250)}
+function rev(i){if(qc!=i)return;qc=-1;clearInterval(tm);room.child("ans/"+i).off();const q=qs[i];
+Object.keys(P).forEach(id=>{S[id]=S[id]||0;room.child("res/"+id).set({i,...(RS[id]||{ok:0,pts:0,na:1})});room.child("players/"+id+"/s").set(S[id])});
+room.child("state").set({p:"rv",i,a:q.a});
+const ks=Object.keys(P).sort((a,b)=>(S[b]||0)-(S[a]||0)),mx=Math.max(1,...ks.map(k=>S[k]||0));
+A.innerHTML=`<div class=top><b>سؤال ${i+1}/${qs.length}</b></div><div class=c><h2 class=q>${E(q.t)}</h2><div class=g2>${q.o.map((o,k)=>`<div class="b op ${k==q.a?"ok":"dim"}" style="--c:${COL[k]}">${SH[k]} ${E(o)}</div>`).join("")}</div></div><div class=c style="margin-top:12px">${ks.map((k,j)=>`<div class=rk><span>${j+1}. ${E(P[k].n)}</span><span class=bw><i style="width:${(S[k]||0)/mx*100}%"></i></span><span>${S[k]||0}${RS[k]&&RS[k].pts?` <small>+${RS[k].pts}</small>`:""}</span></div>`).join("")}</div>`;
+setTimeout(()=>i+1<qs.length?runQ(i+1):fin(),6500)}
+function fin(){room.child("state").set({p:"end"});const ks=Object.keys(P).sort((a,b)=>(S[b]||0)-(S[a]||0));
+A.innerHTML=`<div class=c><h1>🏆 النتيجة النهائية</h1>${ks.map((k,j)=>`<div class=rk><span>${["🥇","🥈","🥉"][j]||j+1+"."} ${E(P[k].n)}</span><span>${S[k]||0}</span></div>`).join("")}<button class="b big" onclick=host()>🔄 لعبة جديدة</button></div>`}
+
+/* ---------- اللاعب (الجوال) ---------- */
+function phone(code){const room=db.ref("rooms/"+code);let pid=null,st=null,my=null,ALL={},qo=[],ans=-1,tmr;
+try{pid=sessionStorage["p"+code]}catch(e){}
+const conn=()=>{room.child("state").on("value",s=>{st=s.val();if(st&&st.p=="q"){qo=st.o;ans=-1}draw()});
+room.child("res/"+pid).on("value",s=>{my=s.val();if(st&&st.p=="rv"){navigator.vibrate&&navigator.vibrate(my&&my.ok?60:[150]);draw()}});
+room.child("players").on("value",s=>{ALL=s.val()||{};if(!st||st.p!="q")draw()})};
+const rank=()=>{const l=Object.entries(ALL).sort((a,b)=>(b[1].s||0)-(a[1].s||0));return{r:l.findIndex(x=>x[0]==pid)+1,n:l.length,s:(ALL[pid]||{}).s||0}};
+function draw(){clearInterval(tmr);
+if(!st)return A.innerHTML=`<div class=c><h2>⏳ جاري الاتصال...<br><small>تأكد من رقم الغرفة وأن التلفزيون شغّال</small></h2></div>`;
+if(st.p=="lobby")return A.innerHTML=`<div class=c><h2>✅ دخلت اللعبة!</h2><h3 style="text-align:center">انتظر المضيف يبدأ 📺<br>اللاعبون: ${rank().n}</h3></div>`;
+if(st.p=="q"){const t1=Date.now();A.innerHTML=`<div class=top><b>سؤال ${st.i+1}/${st.n}</b><b id=tn>${st.d}</b></div><div class=tb><i id=tf></i></div><h2>${E(st.t)}</h2><div class=g2 id=ob>${st.o.map((o,k)=>`<button class="b op" style="--c:${COL[k]}" data-k=${k}>${SH[k]} ${E(o)}</button>`).join("")}</div><h3 id=sm style="text-align:center"></h3>`;
+const lock=()=>{document.querySelectorAll("#ob .b").forEach(b=>{b.disabled=true;if(+b.dataset.k!=ans)b.classList.add("dim")});$("#sm").textContent=ans>=0?"✔ تم إرسال جوابك":"⏰ انتهى الوقت"};
+$("#ob").onclick=e=>{const b=e.target.closest("button");if(!b||ans>=0||b.disabled)return;ans=+b.dataset.k;room.child("ans/"+st.i+"/"+pid).set({c:ans});navigator.vibrate&&navigator.vibrate(40);lock()};
+tmr=setInterval(()=>{const l=st.d-(Date.now()-t1)/1000;$("#tf")&&($("#tf").style.width=Math.max(0,l/st.d*100)+"%");$("#tn")&&($("#tn").textContent=Math.max(0,Math.ceil(l)));if(l<=0){clearInterval(tmr);lock()}},250);return}
+const k=rank();
+if(st.p=="rv"){const r=my&&my.i==st.i?my:null;return A.innerHTML=`<div class=c><h1>${!r?"…":r.ok?"✅ صح!":r.na?"⏰ ما جاوبت":"❌ غلط"}</h1>${r&&r.ok?`<h2>+${r.pts} نقطة</h2>`:`<h3 style="text-align:center">الجواب: ${E(qo[st.a]||"")}</h3>`}<div class=rk><span>ترتيبك</span><span>#${k.r} من ${k.n}</span></div><div class=rk><span>نقاطك</span><span>${k.s}</span></div></div>`}
+A.innerHTML=`<div class=c><h1>🏆 انتهت اللعبة</h1><h2>مركزك #${k.r} من ${k.n}</h2><div class=rk><span>نقاطك</span><span>${k.s}</span></div></div>`}
+if(pid)return conn();
+A.innerHTML=`<div class=c><h1>🎉 لمّة العايلة</h1><p style="text-align:center">الغرفة ${E(code)}</p><input id=nm maxlength=12 placeholder="اكتب اسمك"><button class="b big" id=jn>ادخل ▶</button></div>`;
+$("#jn").onclick=()=>{const n=$("#nm").value.trim();if(!n)return;pid="u"+Math.random().toString(36).slice(2,8);try{sessionStorage["p"+code]=pid}catch(e){}room.child("players/"+pid).set({n,s:0}).then(conn)}}
+
+if(!db)A.innerHTML=`<div class=c><h2>⚙️ لم تُضَف إعدادات Firebase بعد</h2><p style="text-align:center">افتح الملف والصق إعدادات مشروعك داخل <b>FB</b> أول السكربت.</p></div>`;
+else{const R=new URLSearchParams(location.search).get("r");R?phone(R):home()}
+</script>
+</body>
+</html>
